@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeoGear - Phụ kiện công nghệ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__overlay"></div>
+      <nav class="nav">
+        <div class="logo">NEOGEAR</div>
+        <ul>
+          <li><a href="#products">Sản phẩm</a></li>
+          <li><a href="#offers">Ưu đãi</a></li>
+          <li><a href="#about">Về chúng tôi</a></li>
+        </ul>
+      </nav>
+
+      <section class="hero__content">
+        <div class="hero__text">
+          <p class="kicker">New Tech Now Live</p>
+          <h1>
+            Phụ kiện điện tử<br />
+            chuẩn hiệu năng,<br />
+            đậm chất tương lai.
+          </h1>
+          <p>
+            Tông xanh navy + neon cyan lấy cảm hứng từ hình mẫu. Tập trung vào cảm giác cao cấp,
+            hiện đại và dễ mua hàng trên mọi thiết bị.
+          </p>
+          <div class="hero__cta">
+            <a href="#products" class="btn btn--primary">Mua ngay</a>
+            <a href="#about" class="btn btn--ghost">Xem thương hiệu</a>
+          </div>
+        </div>
+
+        <div class="hero__visual">
+          <div class="main-card">
+            <img
+              src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1100&q=80"
+              alt="Tai nghe không dây"
+            />
+          </div>
+          <div class="side-card">
+            <img
+              src="https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=800&q=80"
+              alt="Bàn phím cơ"
+            />
+            <span class="badge">LOGO</span>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section id="products" class="products section">
+        <h2>Sản phẩm nổi bật</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>Tai nghe ANC Pro X</h3>
+            <p>Khử ồn chủ động, pin 40 giờ, âm bass sâu.</p>
+            <strong>2.990.000đ</strong>
+          </article>
+          <article class="card">
+            <h3>Bàn phím cơ Aurora 75</h3>
+            <p>Switch hot-swap, LED RGB, layout nhỏ gọn.</p>
+            <strong>1.890.000đ</strong>
+          </article>
+          <article class="card">
+            <h3>Sạc GaN 100W NeoCharge</h3>
+            <p>2 cổng USB-C + 1 USB-A, sạc nhanh laptop.</p>
+            <strong>890.000đ</strong>
+          </article>
+        </div>
+      </section>
+
+      <section id="offers" class="offer section">
+        <p>20% OFF ALL GADGETS · ENDS IN 24 HOURS</p>
+      </section>
+
+      <section id="about" class="section about">
+        <h2>Deploy lên AWS nhanh gọn</h2>
+        <ol>
+          <li>Push source lên GitHub.</li>
+          <li>Tạo service trên AWS App Runner hoặc Elastic Beanstalk.</li>
+          <li>Trỏ tới repo/container, set PORT (hoặc dùng mặc định).</li>
+          <li>Deploy và theo dõi health endpoint <code>/health</code>.</li>
+        </ol>
+      </section>
+    </main>
+  </body>
+</html>
