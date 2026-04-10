@@ -1,0 +1,21 @@
+{
+  "name": "electro-accessories-store",
+  "version": "1.0.0",
+  "description": "Landing page bán phụ kiện điện tử theo tông xanh đậm neon",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "ecommerce",
+    "aws"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
