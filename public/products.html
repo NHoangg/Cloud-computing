@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sản Phẩm - NeoGear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Styling dành riêng cho header của trang phụ */
+    .nav-page {
+      padding: 1.2rem 4vw;
+      background: var(--bg-1);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav nav-page">
+    <div class="logo">NEOGEAR</div>
+    <ul>
+      <li><a href="/">Trang chủ</a></li>
+      <li><a href="/products.html" style="color: var(--accent);">Sản phẩm</a></li>
+      <li><a href="/cart.html">Giỏ hàng (<span id="cart-count">0</span>)</a></li>
+      <li><a href="/user.html" style="color: #a1ff71; border: 1px solid rgba(161, 255, 113, 0.3); padding: 0.4rem 1rem; border-radius: 20px; transition: all 0.3s; margin-right: 0.5rem;">👤 Hồ sơ</a></li>
+      <li><a href="/login.html" style="color: var(--accent); border: 1px solid var(--accent-soft); padding: 0.4rem 1rem; border-radius: 20px; transition: all 0.3s;">Đăng nhập</a></li>
+    </ul>
+  </nav>
+
+  <main style="padding: 4rem 4vw; min-height: 80vh; max-width: 1200px; margin: 0 auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent-soft); padding-bottom: 1rem; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+      <h2 style="font-size: 2rem; color: var(--accent); margin: 0; border: none; padding: 0;">Tất Cả Sản Phẩm</h2>
+      <div style="display: flex; gap: 0.5rem; width: 100%; max-width: 400px;">
+        <input type="text" id="searchInput" placeholder="Tìm kiếm sản phẩm..." style="flex: 1; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--accent-soft); background: rgba(0,0,0,0.3); color: white; outline: none; font-size: 1rem;" onkeypress="if(event.key === 'Enter') executeSearch()">
+        <button class="btn btn--primary" onclick="executeSearch()" style="padding: 0 1.5rem; border-radius: 8px;">Tìm</button>
+      </div>
+    </div>
+    <div class="products grid" id="all-products-list" style="margin-top: 2rem;">
+      <div style="text-align: center; color: var(--muted); grid-column: 1/-1;">Đang tải dữ liệu sản phẩm...</div>
+    </div>
+  </main>
+
+  <footer style="padding: 2rem; text-align: center; border-top: 1px solid var(--accent-soft); color: var(--muted); background: var(--bg-1);">
+    &copy; 2026 NeoGear. All rights reserved.
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function executeSearch() {
+      const q = document.getElementById('searchInput').value;
+      loadProducts(q);
+    }
+    
+    function loadProducts(searchQuery = '') {
+      const url = searchQuery ? `/api/products?search=${encodeURIComponent(searchQuery)}` : '/api/products';
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById('all-products-list');
+          if(!data.success || data.data.length === 0) {
+             container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 2rem; font-size: 1.2rem;">Không tìm thấy sản phẩm nào khớp với từ khóa.</div>';
+             return;
+          }
+          container.innerHTML = data.data.map(p => `
+            <article class="card" style="position: relative;">
+              <a href="/product.html?id=${p.id}" class="product-card-link" style="position: absolute; inset: 0; z-index: 1;" aria-label="Xem chi tiết ${p.name}"></a>
+              <div style="position: relative; z-index: 2;">
+                <div style="font-size: 0.8rem; color: var(--muted); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 1px;">${p.category}</div>
+                <h3 style="margin:0 0 0.5rem 0; font-size:1.1rem; min-height: 2.6rem;">${p.name}</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-top: 1rem;">
+                  <strong style="color: var(--accent); font-size: 1.2rem;">${new Intl.NumberFormat('vi-VN').format(p.price)}đ</strong>
+                  <span style="font-size: 0.85rem; color: var(--muted);">Kho: ${p.stock}</span>
+                </div>
+                <button class="btn btn--ghost add-to-cart-dynamic" onclick="event.stopPropagation(); addDynamicToCart('${p.id}', '${p.name}', ${p.price}, '${p.img}', this)" style="margin-top: 1rem; width: 100%; cursor: pointer; position: relative; z-index: 3;">Thêm vào giỏ</button>
+              </div>
+            </article>
+          `).join('');
+        })
+        .catch(err => {
+            console.error('Error fetching products:', err);
+            document.getElementById('all-products-list').innerHTML = '<div style="color: red; grid-column: 1/-1; text-align:center;">Lỗi tải sản phẩm. Hãy thử lại.</div>';
+        });
+    }
+
+    // Tải toàn bộ sản phẩm lúc khởi động
+    loadProducts();
+  </script>
+</body>
+</html>

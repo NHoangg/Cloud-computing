@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thanh Toán - NeoGear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .nav-page { padding: 1.2rem 4vw; background: var(--bg-1); border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .checkout-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; }
+    .form-control { width: 100%; padding: 0.9rem; margin-bottom: 1rem; border: 1px solid var(--accent-soft); background: rgba(0,0,0,0.3); color: white; border-radius: 6px; font-family: inherit;}
+    .form-control:focus { outline: none; border-color: var(--accent); background: rgba(0,0,0,0.5); }
+    .payment-card { border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; cursor: pointer; transition: 0.3s; display: flex; align-items: center; gap: 1rem; background: rgba(0,0,0,0.2); }
+    .payment-card:hover, .payment-card.active { border-color: var(--accent); background: rgba(61, 217, 255, 0.05); }
+    .payment-icon { width: 40px; height: 40px; object-fit: contain; }
+    
+    @media (max-width: 768px) {
+        .checkout-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav nav-page">
+    <div class="logo">NEOGEAR</div>
+    <ul>
+      <li><a href="/">Trang chủ</a></li>
+      <li><a href="/cart.html">Quay lại giỏ hàng</a></li>
+      <li><a href="/user.html" style="color: #a1ff71; border: 1px solid rgba(161, 255, 113, 0.3); padding: 0.4rem 1rem; border-radius: 20px; transition: all 0.3s; margin-right: 0.5rem;">👤 Hồ sơ</a></li>
+      <li><a href="/login.html" style="color: var(--accent); border: 1px solid var(--accent-soft); padding: 0.4rem 1rem; border-radius: 20px; transition: all 0.3s;">Đăng nhập</a></li>
+    </ul>
+  </nav>
+
+  <main style="padding: 4rem 4vw; min-height: 80vh; max-width: 1200px; margin: 0 auto;">
+    <h2 style="font-size: 2rem; color: var(--text); border-bottom: 1px solid var(--accent-soft); padding-bottom: 1rem; margin-bottom: 2rem;">Thanh Toán Đơn Hàng</h2>
+    
+    <form id="page-checkout-form" class="checkout-grid">
+      <!-- Cột thông tin -->
+      <div style="background: var(--bg-1); border: 1px solid var(--accent-soft); border-radius: 12px; padding: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3 style="margin-top:0; color: var(--accent); margin-bottom: 0;">1. Thông tin giao hàng</h3>
+          <button type="button" onclick="loadSavedUserInfo()" class="btn btn--secondary" style="padding: 0.6rem 1.2rem; font-size: 0.9rem; border: 1px solid var(--accent-soft); background: rgba(61, 217, 255, 0.1); color: var(--accent); cursor: pointer; border-radius: 6px; transition: 0.3s;">📥 Tải thông tin đã lưu</button>
+        </div>
+        <input type="text" id="chk-name" class="form-control" placeholder="Họ và tên người nhận" required />
+        <input type="tel" id="chk-phone" class="form-control" placeholder="Số điện thoại liên hệ" required />
+        <input type="text" id="chk-address" class="form-control" placeholder="Địa chỉ giao hàng chi tiết (Số nhà, Đường, Phường/Xã...)" required />
+        <textarea id="chk-note" class="form-control" placeholder="Ghi chú thêm (Tùy chọn)" rows="3"></textarea>
+
+        <h3 style="margin-top:2rem; color: var(--accent); margin-bottom: 1.5rem;">2. Phương thức thanh toán</h3>
+        <div class="payment-methods">
+          <label class="payment-card active">
+            <input type="radio" name="payment-method" value="COD" checked style="accent-color: var(--accent);">
+            <img src="https://cdn-icons-png.flaticon.com/512/1554/1554401.png" class="payment-icon" style="filter: invert(1);"/>
+            <div>
+              <strong style="color: var(--text);">Thanh toán khi nhận hàng (COD)</strong>
+              <div style="font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem;">Thanh toán bằng tiền mặt khi giao hàng</div>
+            </div>
+          </label>
+          <label class="payment-card">
+            <input type="radio" name="payment-method" value="BANK" style="accent-color: var(--accent);">
+            <img src="https://cdn-icons-png.flaticon.com/512/2830/2830284.png" class="payment-icon" style="filter: invert(1);"/>
+            <div>
+              <strong style="color: var(--text);">Chuyển khoản ngân hàng</strong>
+              <div style="font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem;">Miễn phí giao dịch</div>
+            </div>
+          </label>
+          <label class="payment-card">
+            <input type="radio" name="payment-method" value="MOMO" style="accent-color: var(--accent);">
+            <img src="https://static.ybox.vn/2021/9/4/1631757348918-1631085786958-Thi%E1%BA%BFt%20k%E1%BA%BF%20kh%C3%B4ng%20t%C3%AAn%20-%202021-09-08T002253.248.png" class="payment-icon" />
+            <div>
+              <strong style="color: var(--text);">Ví MoMo</strong>
+              <div style="font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem;">Quét mã QR qua ứng dụng MoMo</div>
+            </div>
+          </label>
+          <label class="payment-card">
+            <input type="radio" name="payment-method" value="VNPAY" style="accent-color: var(--accent);">
+            <img src="https://vinadesign.vn/uploads/thumbnails/800/2023/05/vnpay-logo-vinadesign-25-12-59-16.jpg" class="payment-icon" />
+            <div>
+              <strong style="color: var(--text);">VNPAY-QR</strong>
+              <div style="font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem;">Thanh toán qua ứng dụng ngân hàng</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Cột tổng kết -->
+      <div style="background: var(--bg-2); border: 1px solid var(--accent-soft); border-radius: 12px; padding: 2rem; height: fit-content; position: sticky; top: 2rem;">
+        <h3 style="margin-top:0; border-bottom: 1px dashed rgba(255,255,255,0.2); padding-bottom: 1rem; color: var(--text);">Đơn hàng của bạn</h3>
+        <div id="checkout-items" style="margin-bottom: 1rem; max-height: 40vh; overflow-y: auto;">
+          <!-- Item render here -->
+        </div>
+        <div style="border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 1rem; margin-bottom: 1rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem; color: var(--muted);">
+            <span>Tạm tính:</span>
+            <span id="chk-subtotal">0đ</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-bottom: 0.5rem; color: var(--muted);">
+            <span>Phí vận chuyển:</span>
+            <span>Miễn phí</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid var(--accent-soft); padding-top: 1rem; margin-bottom: 1.5rem;">
+          <strong style="font-size: 1.2rem;">Tổng cộng:</strong>
+          <strong id="chk-total" style="color: var(--accent); font-size: 1.8rem;">0đ</strong>
+        </div>
+        <button type="submit" id="submit-order-btn" class="btn btn--primary" style="width: 100%; padding: 1.2rem; font-size: 1.1rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;">Xác Nhận Đặt Hàng</button>
+      </div>
+    </form>
+  </main>
+
+  <!-- Modal thông báo thành công -->
+  <div id="success-modal" class="modal">
+      <div class="modal-content" style="text-align: center; max-width: 500px; padding: 3rem 2rem;">
+        <img src="https://cdn-icons-png.flaticon.com/512/1904/1904118.png" style="width: 80px; margin-bottom: 1rem; filter: hue-rotate(180deg);" />
+        <h2 style="color: var(--accent); margin-top:0;">Đặt Hàng Thành Công!</h2>
+        <p id="success-msg" style="margin: 1rem 0; color: var(--text); line-height: 1.6;"></p>
+        <div id="qr-container" style="display: none; margin: 1.5rem auto; background: white; padding: 1rem; border-radius: 8px; width: fit-content;">
+            <img id="payment-qr" src="" style="width: 200px; height: 200px;" />
+            <p style="color: black; margin-top: 0.5rem; font-weight: bold; font-size: 0.9rem;">Quét mã để thanh toán</p>
+        </div>
+        <button onclick="window.location.href='/'" class="btn btn--primary" style="cursor: pointer; margin-top: 1rem; padding: 0.8rem 2rem;">Về Trang Chủ</button>
+      </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    renderCheckoutPage();
+    
+    // Highlight radio cards
+    document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            document.querySelectorAll('.payment-card').forEach(c => c.classList.remove('active'));
+            e.target.closest('.payment-card').classList.add('active');
+        });
+    });
+
+    document.getElementById('page-checkout-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const selectedItems = cart.filter(item => item.isSelected);
+        if (selectedItems.length === 0) return alert('Giỏ hàng trống!');
+
+        const name = document.getElementById('chk-name').value;
+        const phone = document.getElementById('chk-phone').value;
+        const address = document.getElementById('chk-address').value;
+        const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+        const total = selectedItems.reduce((add, item) => add + item.price * item.quantity, 0);
+
+        const btn = document.getElementById('submit-order-btn');
+        btn.innerText = 'Đang xử lý...';
+        btn.disabled = true;
+
+        try {
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, phone, address, cart: selectedItems, total, paymentMethod })
+            });
+            const data = await response.json();
+            
+            if(data.success) {
+                cart = cart.filter(item => !item.isSelected);
+                saveCart();
+                updateCartCount();
+
+                const successModal = document.getElementById('success-modal');
+                const successMsg = document.getElementById('success-msg');
+                const qrContainer = document.getElementById('qr-container');
+                const qrImg = document.getElementById('payment-qr');
+
+                let msg = `Cảm ơn <strong>${name}</strong> đã đặt hàng.<br/>Mã đơn hàng của bạn là: <strong style="color:var(--accent); font-size: 1.2rem;">${data.orderId}</strong>`;
+                
+                qrContainer.style.display = 'none';
+                if(paymentMethod === 'BANK') {
+                    msg += `<div style="background:rgba(0,0,0,0.3); padding:1rem; border-radius:8px; margin-top:1rem; text-align:left;">
+                            <div style="margin-bottom:0.5rem">Vui lòng chuyển khoản số tiền: <strong style="color:var(--accent)">${formatPrice(data.total)}</strong></div>
+                            <div>Ngân hàng: <strong>Vietcombank</strong></div>
+                            <div>Số TK: <strong>19001009</strong></div>
+                            <div>Chủ TK: <strong>NEOGEAR VN</strong></div>
+                            <div>Nội dung: <strong>${data.orderId}</strong></div>
+                           </div>`;
+                } else if (paymentMethod === 'MOMO' || paymentMethod === 'VNPAY') {
+                    msg += `<br/><br/>Hệ thống đang chờ bạn thanh toán qua ${paymentMethod}.`;
+                    // Mã QR giả lập (Dùng API tạo QR nhanh)
+                    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=NEOGEAR_${data.orderId}_${data.total}`;
+                    qrContainer.style.display = 'block';
+                }
+
+                successMsg.innerHTML = msg;
+                successModal.classList.add('show');
+            } else {
+                alert(data.message || 'Lỗi đặt hàng, vui lòng thử lại');
+            }
+        } catch(err) {
+            alert('Lỗi kết nối máy chủ');
+        } finally {
+            btn.innerText = 'XÁC NHẬN ĐẶT HÀNG';
+            btn.disabled = false;
+        }
+    });
+  </script>
+</body>
+</html>

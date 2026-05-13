@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giỏ Hàng - NeoGear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .nav-page {
+      padding: 1.2rem 4vw;
+      background: var(--bg-1);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav nav-page">
+    <div class="logo">NEOGEAR</div>
+    <ul>
+      <li><a href="/">Trang chủ</a></li>
+      <li><a href="/products.html">Sản phẩm</a></li>
+      <li><a href="/cart.html" style="color: var(--accent);">Giỏ hàng (<span id="cart-count">0</span>)</a></li>
+      <li><a href="/user.html" style="color: #a1ff71; border: 1px solid rgba(161, 255, 113, 0.3); padding: 0.4rem 1rem; border-radius: 20px; transition: all 0.3s; margin-right: 0.5rem;">👤 Hồ sơ</a></li>
+      <li><a href="/login.html" style="color: var(--accent); border: 1px solid var(--accent-soft); padding: 0.4rem 1rem; border-radius: 20px; transition: all 0.3s;">Đăng nhập</a></li>
+    </ul>
+  </nav>
+
+  <main style="padding: 4rem 4vw; min-height: 80vh; max-width: 1000px; margin: 0 auto;">
+    <h2 style="font-size: 2rem; color: var(--text); border-bottom: 1px solid var(--accent-soft); padding-bottom: 1rem; margin-bottom: 2rem;">Giỏ hàng của bạn</h2>
+    
+    <div style="background: var(--bg-1); border: 1px solid var(--accent-soft); border-radius: 12px; padding: 2rem; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+        <div style="display: grid; grid-template-columns: 3fr 1fr 1fr 1fr 1fr; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; color: var(--muted); font-size: 0.9rem;">
+          <div style="text-align: left; display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="select-all" style="cursor:pointer; width:16px; height:16px; accent-color: var(--accent);" />
+            Sản Phẩm
+          </div>
+          <div>Đơn Giá</div>
+          <div>Số Lượng</div>
+          <div>Số Tiền</div>
+          <div>Thao Tác</div>
+        </div>
+        
+        <div id="cart-items-page" style="margin-bottom: 2rem;">
+          <!-- Items will be injected here -->
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; gap: 2rem; background: var(--bg-2); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--accent-soft);">
+          <div><a href="/products.html" class="btn btn--ghost">Tiếp tục mua sắm </a></div>
+          <div style="display: flex; align-items: center; gap: 2rem;">
+              <div>
+                 Tổng thanh toán (<span id="selected-count-page">0</span> sản phẩm): 
+                 <strong id="total-price-page" style="color: var(--accent); font-size: 1.5rem; margin-left: 0.5rem;">0đ</strong>
+              </div>
+              <button onclick="goToCheckout()" class="btn btn--primary" style="cursor: pointer; padding: 0.8rem 2.5rem; font-size: 1.1rem;">Tiến Hành Thanh Toán</button>
+          </div>
+        </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    renderPageCart();
+    function goToCheckout() {
+      const selected = cart.filter(c => c.isSelected);
+      if(selected.length === 0) {
+        alert('Vui lòng chọn ít nhất 1 sản phẩm để thanh toán!');
+        return;
+      }
+      window.location.href = '/checkout.html';
+    }
+  </script>
+</body>
+</html>

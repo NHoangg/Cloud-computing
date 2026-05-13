@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hồ Sơ Khách Hàng - NeoGear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .nav-page { padding: 1.2rem 4vw; background: var(--bg-1); border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .profile-container { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; }
+    .profile-card { background: var(--bg-1); border: 1px solid var(--accent-soft); border-radius: 12px; padding: 2.5rem; margin-bottom: 2rem; }
+    .profile-header { display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px dashed rgba(255,255,255,0.2); }
+    .profile-avatar { width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), #00d4ff); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+    .profile-info-display { flex: 1; }
+    .profile-info-display h2 { margin: 0 0 0.5rem 0; color: var(--accent); font-size: 1.8rem; }
+    .profile-info-display p { margin: 0.3rem 0; color: var(--muted); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+    .form-row.full { grid-template-columns: 1fr; }
+    .form-group { display: flex; flex-direction: column; }
+    .form-group label { color: var(--accent); font-weight: 600; margin-bottom: 0.6rem; font-size: 0.95rem; }
+    .form-control { padding: 0.9rem; border: 1px solid var(--accent-soft); background: rgba(0,0,0,0.3); color: white; border-radius: 6px; font-family: inherit; font-size: 0.95rem; transition: 0.3s; }
+    .form-control:focus { outline: none; border-color: var(--accent); background: rgba(0,0,0,0.5); box-shadow: 0 0 12px rgba(61, 217, 255, 0.2); }
+    .form-control:disabled { background: rgba(0,0,0,0.1); border-color: rgba(255,255,255,0.1); cursor: not-allowed; color: var(--muted); }
+    .button-group { display: flex; gap: 1rem; margin-top: 2rem; }
+    .btn { padding: 0.9rem 2rem; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.3s; font-size: 1rem; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), #00d4ff); color: var(--bg-1); }
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(61, 217, 255, 0.3); }
+    .btn-secondary { background: rgba(255,255,255,0.1); color: white; border: 1px solid var(--accent-soft); }
+    .btn-secondary:hover { background: rgba(61, 217, 255, 0.1); border-color: var(--accent); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .edit-btn { background: none; border: none; color: var(--accent); cursor: pointer; font-weight: 600; padding: 0; margin-left: 1rem; transition: 0.3s; }
+    .edit-btn:hover { color: #00d4ff; }
+    .status-message { padding: 1rem; border-radius: 6px; margin-bottom: 1.5rem; display: none; font-weight: 500; }
+    .status-message.success { background: rgba(76, 209, 55, 0.2); border-left: 4px solid #4cd137; color: #a8e6a1; }
+    .status-message.error { background: rgba(255, 71, 87, 0.2); border-left: 4px solid #ff4757; color: #ff9999; }
+    .section-title { color: var(--accent); font-size: 1.3rem; font-weight: 700; margin-top: 2rem; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px dashed var(--accent-soft); }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .info-item { background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 6px; border-left: 3px solid var(--accent); }
+    .info-item-label { color: var(--muted); font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .info-item-value { color: white; font-weight: 600; font-size: 1.1rem; }
+    @media (max-width: 768px) {
+      .profile-header { flex-direction: column; text-align: center; }
+      .profile-card { padding: 1.5rem; }
+      .form-row { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr; }
+      .button-group { flex-direction: column; }
+      .button-group .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav nav-page">
+    <div class="logo">NEOGEAR</div>
+    <ul>
+      <li><a href="/">Trang chủ</a></li>
+      <li><a href="/products.html">Sản phẩm</a></li>
+      <li><a href="/cart.html">Giỏ hàng <span id="cart-count" style="background: var(--accent); color: var(--bg-1); padding: 0.1rem 0.5rem; border-radius: 50%; font-size: 0.75rem; margin-left: 0.3rem;">0</span></a></li>
+      <li><a href="/login.html" style="color: var(--accent); border: 1px solid var(--accent-soft); padding: 0.4rem 1rem; border-radius: 20px; transition: all 0.3s;">Đăng nhập</a></li>
+    </ul>
+  </nav>
+
+  <div class="profile-container">
+    <div class="status-message" id="status-message"></div>
+
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar" id="profile-avatar">👤</div>
+        <div class="profile-info-display" id="profile-info-display">
+          <h2>Tên khách hàng</h2>
+          <p id="display-phone">Chưa cập nhật</p>
+          <p id="display-address">Chưa cập nhật</p>
+        </div>
+        <button class="edit-btn" id="toggle-edit-btn" onclick="toggleEditMode()">✎ Chỉnh sửa</button>
+      </div>
+
+      <div id="view-mode">
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-item-label">Họ và tên</div>
+            <div class="info-item-value" id="view-name">Chưa cập nhật</div>
+          </div>
+          <div class="info-item">
+            <div class="info-item-label">Số điện thoại</div>
+            <div class="info-item-value" id="view-phone">Chưa cập nhật</div>
+          </div>
+          <div class="info-item" style="grid-column: 1/-1;">
+            <div class="info-item-label">Địa chỉ giao hàng</div>
+            <div class="info-item-value" id="view-address">Chưa cập nhật</div>
+          </div>
+          <div class="info-item">
+            <div class="info-item-label">Email</div>
+            <div class="info-item-value" id="view-email">Chưa cập nhật</div>
+          </div>
+          <div class="info-item">
+            <div class="info-item-label">Ngày tạo hồ sơ</div>
+            <div class="info-item-value" id="view-created">Chưa cập nhật</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="edit-mode" style="display: none;">
+        <form id="profile-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-name">Họ và tên</label>
+              <input type="text" id="form-name" class="form-control" placeholder="Nhập họ và tên đầy đủ" required />
+            </div>
+            <div class="form-group">
+              <label for="form-phone">Số điện thoại</label>
+              <input type="tel" id="form-phone" class="form-control" placeholder="Nhập số điện thoại" required />
+            </div>
+          </div>
+          <div class="form-row full">
+            <div class="form-group">
+              <label for="form-address">Địa chỉ giao hàng</label>
+              <input type="text" id="form-address" class="form-control" placeholder="Số nhà, Đường, Phường/Xã, Quận/Huyện, Thành phố..." required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="form-email">Email (Tùy chọn)</label>
+              <input type="email" id="form-email" class="form-control" placeholder="Nhập email của bạn" />
+            </div>
+          </div>
+          
+          <div class="button-group">
+            <button type="submit" class="btn btn-primary" id="save-btn">💾 Lưu thông tin</button>
+            <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">✕ Hủy</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <h3 class="section-title">⚡ Tham khảo nhanh</h3>
+      <p style="color: var(--muted); margin-bottom: 1.5rem;">Thông tin này sẽ tự động được điền khi bạn thanh toán. Bạn có thể cập nhật bất cứ lúc nào.</p>
+      <button class="btn btn-primary" onclick="goToCheckout()" style="width: 100%;">🛒 Sử dụng thông tin này để thanh toán</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    let isEditMode = false;
+    let userProfile = null;
+
+    // Khởi tạo trang
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCartCount();
+      checkAuth();
+      loadUserProfile();
+    });
+
+    // Tải thông tin khách hàng từ localStorage
+    function loadUserProfile() {
+      const saved = JSON.parse(localStorage.getItem('userProfile')) || {};
+      userProfile = {
+        name: saved.name || '',
+        phone: saved.phone || '',
+        address: saved.address || '',
+        email: saved.email || '',
+        createdAt: saved.createdAt || new Date().toISOString()
+      };
+      updateDisplay();
+    }
+
+    // Cập nhật hiển thị thông tin
+    function updateDisplay() {
+      // Hiển thị chế độ xem
+      document.getElementById('view-name').textContent = userProfile.name || 'Chưa cập nhật';
+      document.getElementById('view-phone').textContent = userProfile.phone || 'Chưa cập nhật';
+      document.getElementById('view-address').textContent = userProfile.address || 'Chưa cập nhật';
+      document.getElementById('view-email').textContent = userProfile.email || 'Chưa cập nhật';
+      
+      const date = new Date(userProfile.createdAt);
+      const dateStr = date.toLocaleDateString('vi-VN');
+      document.getElementById('view-created').textContent = dateStr;
+
+      // Cập nhật phần header
+      document.getElementById('display-phone').textContent = userProfile.phone || 'Chưa cập nhật';
+      document.getElementById('display-address').textContent = userProfile.address || 'Chưa cập nhật';
+      
+      // Cập nhật form khi chế độ edit mở
+      if(isEditMode) {
+        document.getElementById('form-name').value = userProfile.name;
+        document.getElementById('form-phone').value = userProfile.phone;
+        document.getElementById('form-address').value = userProfile.address;
+        document.getElementById('form-email').value = userProfile.email;
+      }
+
+      // Cập nhật header khách hàng
+      const headerName = userProfile.name || 'Tên khách hàng';
+      document.querySelector('.profile-header h2').textContent = headerName;
+    }
+
+    // Chuyển đổi chế độ chỉnh sửa
+    function toggleEditMode() {
+      isEditMode = !isEditMode;
+      document.getElementById('view-mode').style.display = isEditMode ? 'none' : 'block';
+      document.getElementById('edit-mode').style.display = isEditMode ? 'block' : 'none';
+      document.getElementById('toggle-edit-btn').textContent = isEditMode ? '✕ Thoát' : '✎ Chỉnh sửa';
+      
+      if(isEditMode) {
+        updateDisplay();
+        document.getElementById('form-name').focus();
+      }
+    }
+
+    // Lưu thông tin khách hàng
+    document.getElementById('profile-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const name = document.getElementById('form-name').value.trim();
+      const phone = document.getElementById('form-phone').value.trim();
+      const address = document.getElementById('form-address').value.trim();
+      const email = document.getElementById('form-email').value.trim();
+
+      if(!name || !phone || !address) {
+        showMessage('Vui lòng điền đầy đủ thông tin bắt buộc!', 'error');
+        return;
+      }
+
+      if(phone && !/^[0-9\-\+\s]{10,}$/.test(phone)) {
+        showMessage('Số điện thoại không hợp lệ!', 'error');
+        return;
+      }
+
+      userProfile = {
+        name,
+        phone,
+        address,
+        email,
+        createdAt: userProfile.createdAt
+      };
+
+      localStorage.setItem('userProfile', JSON.stringify(userProfile));
+      showMessage('✓ Đã lưu thông tin khách hàng thành công!', 'success');
+      
+      setTimeout(() => {
+        toggleEditMode();
+        updateDisplay();
+      }, 1000);
+    });
+
+    // Hiển thị thông báo
+    function showMessage(message, type) {
+      const msgEl = document.getElementById('status-message');
+      msgEl.textContent = message;
+      msgEl.className = `status-message ${type}`;
+      msgEl.style.display = 'block';
+      
+      setTimeout(() => {
+        msgEl.style.display = 'none';
+      }, 4000);
+    }
+
+    // Chuyển đến trang thanh toán
+    function goToCheckout() {
+      if(!userProfile.name || !userProfile.phone || !userProfile.address) {
+        showMessage('Vui lòng cập nhật thông tin trước khi thanh toán!', 'error');
+        return;
+      }
+      window.location.href = '/checkout.html?autofill=true';
+    }
+  </script>
+</body>
+</html>

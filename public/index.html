@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NeoGear - Phụ kiện công nghệ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero__overlay"></div>
+      <nav class="nav">
+        <div class="logo">NEOGEAR</div>
+        <ul>
+          <li><a href="/products.html">Sản phẩm</a></li>
+          <li><a href="#offers">Ưu đãi</a></li>
+          <li><a href="/cart.html">Giỏ hàng (<span id="cart-count">0</span>)</a></li>
+          <li><a href="/user.html" style="color: #a1ff71; border: 1px solid rgba(161, 255, 113, 0.3); padding: 0.4rem 1rem; border-radius: 20px; transition: all 0.3s; margin-right: 0.5rem;">👤 Hồ sơ</a></li>
+          <li><a href="/login.html" style="color: var(--accent); border: 1px solid var(--accent-soft); padding: 0.4rem 1rem; border-radius: 20px; transition: all 0.3s;">Đăng nhập</a></li>
+        </ul>
+      </nav>
+
+      <section class="hero__content">
+        <div class="hero__text">
+          <p class="kicker">New Tech Now Live</p>
+
+          <p>
+           
+          </p>
+          <div class="hero__cta">
+            <a href="#products" class="btn btn--primary">Mua ngay</a>
+          </div>
+        </div>
+
+        <div class="hero__visual">
+          <div class="main-card">
+            <img
+              src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1100&q=80"
+              alt="Tai nghe không dây"
+            />
+          </div>
+          <div class="side-card">
+            <img
+              src="https://images.unsplash.com/photo-1511467687858-23d96c32e4ae?auto=format&fit=crop&w=800&q=80"
+              alt="Bàn phím cơ"
+            />
+            <span class="badge"></span>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section id="products" class="section">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; background: var(--bg-1); padding: 1rem; border-radius: 8px;">
+           <h2 style="margin: 0; display: flex; align-items: center; gap: 0.5rem; font-style: italic; color: var(--text);">
+             <span style="color: var(--accent); font-weight: 800; font-size: 1.5rem;">⚡ FLASH SALE</span>
+             <div style="display: flex; gap: 0.2rem; margin-left: 1rem;">
+                <span id="flash-hour" style="background: #000; color: white; padding: 0.2rem 0.4rem; border-radius: 4px; font-weight: bold; font-size: 1rem;">02</span>
+                <span style="font-weight: bold;">:</span>
+                <span id="flash-min" style="background: #000; color: white; padding: 0.2rem 0.4rem; border-radius: 4px; font-weight: bold; font-size: 1rem;">40</span>
+                <span style="font-weight: bold;">:</span>
+                <span id="flash-sec" style="background: #000; color: white; padding: 0.2rem 0.4rem; border-radius: 4px; font-weight: bold; font-size: 1rem;">07</span>
+             </div>
+           </h2>
+           <a href="/products.html" style="color: var(--accent); text-decoration: none; font-size: 0.9rem;">Xem tất cả &gt;</a>
+        </div>
+        
+        <div style="position: relative;">
+            <div id="flash-sale-list" style="display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; scroll-behavior: smooth; scrollbar-width: none;">
+              <div style="color: var(--muted);">Đang tải Flash Sale...</div>
+            </div>
+            <button onclick="document.getElementById('flash-sale-list').scrollBy({left: 300, behavior: 'smooth'})" style="position: absolute; right: -15px; top: 40%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%; background: var(--bg-1); border: 1px solid var(--accent-soft); color: var(--accent); cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 10; font-size: 1.2rem; display: flex; align-items: center; justify-content: center;">&gt;</button>
+        </div>
+
+        <script>
+          // Đồng hồ đếm ngược Flash Sale
+          let flashH = 2, flashM = 40, flashS = 7;
+          setInterval(() => {
+            if (flashS > 0) flashS--;
+            else { flashS = 59; if (flashM > 0) flashM--; else { flashM = 59; if (flashH > 0) flashH--; } }
+            document.getElementById('flash-hour').innerText = flashH.toString().padStart(2, '0');
+            document.getElementById('flash-min').innerText = flashM.toString().padStart(2, '0');
+            document.getElementById('flash-sec').innerText = flashS.toString().padStart(2, '0');
+          }, 1000);
+
+          fetch('/api/products')
+            .then(res => res.json())
+            .then(data => {
+              if(data.success) {
+                const container = document.getElementById('flash-sale-list');
+                const flashSaleItems = data.data.slice(0, 10);
+                container.innerHTML = flashSaleItems.map(p => {
+                  const soldPercent = Math.floor(Math.random() * 60 + 30);
+                  const soldCount = Math.floor(Math.random() * 200 + 10);
+                  return `
+                  <article class="card" style="min-width: 180px; max-width: 180px; flex-shrink: 0; padding: 0.8rem; display: flex; flex-direction: column; background: var(--bg-2); border: 1px solid rgba(255,255,255,0.05);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;">
+                      <div style="flex: 1;">
+                        <div style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 0.35rem;">${p.category}</div>
+                        <h3 style="margin: 0; font-size: 1rem; line-height: 1.3; min-height: 2.6rem;">${p.name}</h3>
+                      </div>
+                      <span style="background: rgba(255, 212, 36, 0.9); color: #d0011b; font-size: 0.75rem; font-weight: bold; padding: 2px 6px; border-radius: 4px; white-space: nowrap;">-${Math.floor(Math.random()*30 + 10)}%</span>
+                    </div>
+
+                    <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-end; gap: 0.75rem;">
+                      <strong style="color: var(--accent); font-size: 1.2rem;">${new Intl.NumberFormat('vi-VN').format(p.price)}đ</strong>
+                      <div style="width: 100%; height: 16px; background: rgba(0,0,0,0.4); border-radius: 8px; position: relative; overflow: hidden; border: 1px solid var(--accent-soft);">
+                        <div style="position: absolute; top: 0; left: 0; height: 100%; width: ${soldPercent}%; background: linear-gradient(90deg, transparent, var(--accent)); opacity: 0.8;"></div>
+                        <span style="position: absolute; width: 100%; text-align: center; color: #fff; font-size: 0.65rem; line-height: 16px; font-weight: 600; z-index: 2; text-shadow: 1px 1px 1px rgba(0,0,0,0.8);">ĐÃ BÁN ${soldCount}</span>
+                      </div>
+                    </div>
+                    
+                    <button class="btn btn--primary" onclick="addDynamicToCart('${p.id}', '${p.name}', ${p.price}, '${p.img}', this)" style="margin-top: 0.8rem; font-size: 0.8rem; padding: 0.4rem; width: 100%; cursor: pointer;">Thêm vào giỏ</button>
+                  </article>
+                  `;
+                }).join('');
+              }
+            });
+        </script>
+      </section>
+
+      <section id="offers" class="offer section">
+        <p>20% OFF ALL GADGETS · ENDS IN 24 HOURS</p>
+      </section>
+
+
+    <div id="cart-modal" class="modal">
+      <div class="modal-content" style="max-width: 1000px; padding: 1.5rem;">
+        <span class="close-btn" style="z-index: 10;">&times;</span>
+        <h2 style="margin-top:0; border-bottom: 1px solid var(--accent-soft); padding-bottom: 1rem;">Giỏ hàng của bạn</h2>
+        
+        <div class="shopee-cart-header" style="display: grid; grid-template-columns: 3fr 1fr 1fr 1fr 1fr; padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; color: var(--muted); font-size: 0.9rem;">
+          <div style="text-align: left; display:flex; align-items:center; gap:0.5rem;">
+            <input type="checkbox" id="select-all" style="cursor:pointer; width:16px; height:16px; accent-color: var(--accent);" />
+            Sản Phẩm
+          </div>
+          <div>Đơn Giá</div>
+          <div>Số Lượng</div>
+          <div>Số Tiền</div>
+          <div>Thao Tác</div>
+        </div>
+        
+        <div id="cart-items" style="max-height: 40vh; overflow-y: auto; margin-bottom: 1rem;">
+          <!-- Items will be injected here -->
+        </div>
+
+        <div class="cart-bottom-bar" style="display:flex; justify-content:flex-end; align-items:center; gap: 2rem; background: var(--bg-2); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--accent-soft);">
+          <div>
+             Tổng thanh toán (<span id="selected-count">0</span> sản phẩm): 
+             <strong id="total-price" style="color: var(--accent); font-size: 1.5rem; margin-left: 0.5rem;">0đ</strong>
+          </div>
+          <!-- Checkout toggle button -->
+          <button id="show-checkout-btn" type="button" class="btn btn--primary" style="cursor: pointer; padding: 0.8rem 2.5rem; font-size: 1.1rem;">Mua Hàng</button>
+        </div>
+        
+        <!-- Khu vực thông tin đặt hàng (ẩn lúc đầu) -->
+        <div id="checkout-section" style="display: none; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--muted);">
+          <h3 style="margin-top:0;">Thông tin giao hàng & Thanh toán</h3>
+          <form id="checkout-form" style="display: grid; gap: 1rem; grid-template-columns: 1fr 1fr;">
+            <div>
+              <input type="text" id="customer-name" placeholder="Họ và tên" required style="width: 100%; padding: 0.9rem; margin-bottom: 0.5rem; border: 1px solid var(--accent-soft); background: rgba(0,0,0,0.3); color: white; border-radius: 6px;" />
+              <input type="text" id="customer-phone" placeholder="Số điện thoại" required style="width: 100%; padding: 0.9rem; margin-bottom: 0.5rem; border: 1px solid var(--accent-soft); background: rgba(0,0,0,0.3); color: white; border-radius: 6px;" />
+              <input type="text" id="customer-address" placeholder="Địa chỉ giao hàng chi tiết" required style="width: 100%; padding: 0.9rem; border: 1px solid var(--accent-soft); background: rgba(0,0,0,0.3); color: white; border-radius: 6px;" />
+            </div>
+            
+            <div class="payment-methods" style="background: rgba(4, 15, 36, 0.5); padding: 1.5rem; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+              <h4 style="margin: 0 0 1rem 0; font-size: 0.95rem; color: var(--muted);">Phương thức thanh toán</h4>
+              <label class="payment-option" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; cursor: pointer; font-size: 0.9rem;">
+                <input type="radio" name="payment-method" value="COD" checked style="accent-color: var(--accent);">
+                <span>Thanh toán khi nhận hàng (COD)</span>
+              </label>
+              <label class="payment-option" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; cursor: pointer; font-size: 0.9rem;">
+                <input type="radio" name="payment-method" value="BANK" style="accent-color: var(--accent);">
+                <span>Chuyển khoản ngân hàng</span>
+              </label>
+              <button type="submit" class="btn btn--primary" style="width: 100%; margin-top: 1rem; cursor: pointer; padding: 1rem;">Đặt hàng & Thanh toán</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thông báo kết quả -->
+    <div id="toast-modal" class="modal" style="z-index: 101;">
+      <div class="modal-content" style="text-align: center; max-width: 400px;">
+        <h2 id="toast-title" style="color: var(--accent);">Thành công</h2>
+        <p id="toast-message" style="margin: 1rem 0;">Nội dung thông báo</p>
+        <button id="toast-close" class="btn btn--primary" style="cursor: pointer;">Đóng</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
